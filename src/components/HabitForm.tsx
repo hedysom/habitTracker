@@ -1,3 +1,11 @@
+import { Button } from "./Button";
+
 export function HabitForm(){
-    return null
+    return (
+        <form>
+            <input className="flex-1 rounded-lg bg-zinc-800 px-4 py-2 outline-none focus-visible:ring-2
+            focus-visible:ring-orange-500" placeholder="New habit..."/>
+        <Button>Add Habit</Button>
+        </form>
+    )
 }
