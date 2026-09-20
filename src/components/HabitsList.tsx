@@ -7,8 +7,13 @@ import {
   startOfWeek,
 } from "date-fns";
 
-export default function HabitsList() {
-  const habits = [{ id: "fnas,d", name: "wiw" }];
+export type Habit = { id: string; name: string };
+
+type HabitsListProps = {
+  habits: Habit[];
+};
+
+export default function HabitsList({ habits }: HabitsListProps) {
   if (habits.length === 0) {
     return (
       <p className="text-center text-zinc-500 py-12">
@@ -26,7 +31,7 @@ export default function HabitsList() {
 }
 
 type HabitItemsProps = {
-  habit: { id: string; name: string };
+  habit: Habit;
 };
 
 function HabitItem({ habit }: HabitItemsProps) {
@@ -42,7 +47,9 @@ function HabitItem({ habit }: HabitItemsProps) {
           <span className="font-medium">{habit.name}</span>
           <span className="text-sm text-amber-400"> Streak x Days</span>
         </div>
-        <Button variant="ghost-destructive" className="text-sm">Delete</Button>
+        <Button variant="ghost-destructive" className="text-sm">
+          Delete
+        </Button>
       </div>
       <div className="flex gap-1.5">
         {visibleDates.map((date) => (

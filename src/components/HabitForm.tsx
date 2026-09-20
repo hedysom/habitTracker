@@ -1,10 +1,26 @@
 import { useState } from "react";
 import { Button } from "./Button";
 
-export function HabitForm() {
+type HabitFormProps = {
+  addHabit : (name : string) => void
+}
+
+export function HabitForm( {addHabit} : HabitFormProps ) {
   const [name, setName] = useState("");
+
+  function handleSubmit(e: SubmitEvent) {
+    e.preventDefault();
+
+    if (name.trim() === "") return;
+    setName("");
+
+    addHabit(name)
+
+    console.log(name);
+  }
+
   return (
-    <form className="flex gap-2">
+    <form className="flex gap-2" onSubmit={handleSubmit}>
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -12,7 +28,9 @@ export function HabitForm() {
             focus-visible:ring-orange-500"
         placeholder="New habit..."
       />
-      <Button className="rounded-lg px-4 py-2 font-medium">Add Habit</Button>
+      <Button 
+      disabled = {name.trim() === ""}
+      className="rounded-lg px-4 py-2 font-medium">Add Habit</Button>
     </form>
   );
 }
