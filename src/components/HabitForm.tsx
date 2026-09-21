@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , type SubmitEvent} from "react";
 import { Button } from "./Button";
 
 type HabitFormProps = {
@@ -15,8 +15,6 @@ export function HabitForm( {addHabit} : HabitFormProps ) {
     setName("");
 
     addHabit(name)
-
-    console.log(name);
   }
 
   return (
