@@ -1,3 +1,4 @@
+import { useHabits, type Habit } from "../context/useHabits";
 import { Button } from "./Button";
 import {
   eachDayOfInterval,
@@ -9,19 +10,10 @@ import {
   subDays,
 } from "date-fns";
 
-export type Habit = { id: string; name: string; completions: Date[] };
 
-type HabitsListProps = {
-  habits: Habit[];
-  deleteHabit: (id: string) => void;
-  toggleHabit: (id: string, date: Date) => void;
-};
 
-export default function HabitsList({
-  habits,
-  deleteHabit,
-  toggleHabit,
-}: HabitsListProps) {
+export default function HabitsList() {
+  const {habits} = useHabits()
   if (habits.length === 0) {
     return (
       <p className="text-center text-zinc-500 py-12">
@@ -36,8 +28,6 @@ export default function HabitsList({
         <HabitItem
           key={habit.id}
           habit={habit}
-          deleteHabit={deleteHabit}
-          toggleHabit={toggleHabit}
         />
       ))}
     </div>
@@ -46,11 +36,11 @@ export default function HabitsList({
 
 type HabitItemsProps = {
   habit: Habit;
-  deleteHabit: (id: string) => void;
-  toggleHabit: (id: string, date: Date) => void;
 };
 
-function HabitItem({ habit, deleteHabit, toggleHabit }: HabitItemsProps) {
+function HabitItem({ habit}: HabitItemsProps) {
+
+  const {deleteHabit, toggleHabit} = useHabits()
   // set the current week starting from Monday
   const visibleDates = eachDayOfInterval({
     start: startOfWeek(new Date(), { weekStartsOn: 1 }),
