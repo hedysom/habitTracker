@@ -1,19 +1,13 @@
 import { useHabits, type Habit } from "../context/useHabits";
 import { Button } from "./Button";
-import {
-  eachDayOfInterval,
-  endOfWeek,
-  format,
-  isSameDay,
-  isFuture,
-  startOfWeek,
-  subDays,
-} from "date-fns";
+import { format, isSameDay, isFuture, subDays } from "date-fns";
 
+type HabitListProps = {
+  visibleDates: Date[];
+};
 
-
-export default function HabitsList() {
-  const {habits} = useHabits()
+export default function HabitsList({ visibleDates }: HabitListProps) {
+  const { habits } = useHabits();
   if (habits.length === 0) {
     return (
       <p className="text-center text-zinc-500 py-12">
@@ -25,10 +19,7 @@ export default function HabitsList() {
   return (
     <div className="flex flex-col gap-3">
       {habits.map((habit) => (
-        <HabitItem
-          key={habit.id}
-          habit={habit}
-        />
+        <HabitItem key={habit.id} habit={habit} visibleDates={visibleDates} />
       ))}
     </div>
   );
@@ -36,16 +27,11 @@ export default function HabitsList() {
 
 type HabitItemsProps = {
   habit: Habit;
+  visibleDates: Date[];
 };
 
-function HabitItem({ habit}: HabitItemsProps) {
-
-  const {deleteHabit, toggleHabit} = useHabits()
-  // set the current week starting from Monday
-  const visibleDates = eachDayOfInterval({
-    start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    end: endOfWeek(new Date(), { weekStartsOn: 1 }),
-  });
+function HabitItem({ habit, visibleDates }: HabitItemsProps) {
+  const { deleteHabit, toggleHabit } = useHabits();
 
   const streak = getStreak(habit.completions);
 
@@ -54,9 +40,12 @@ function HabitItem({ habit}: HabitItemsProps) {
       <div className="flex items-center justify-between ">
         <div className="flex gap-3 items-center">
           <span className="font-medium">{habit.name}</span>
-          { streak !== 0 &&
-          <span className="text-sm text-amber-400"> Streak {streak} Days</span>
-          }
+          {streak !== 0 && (
+            <span className="text-sm text-amber-400">
+              {" "}
+              Streak {streak} Days
+            </span>
+          )}
         </div>
         <Button
           onClick={() => deleteHabit(habit.id)}
